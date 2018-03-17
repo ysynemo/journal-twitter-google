@@ -1,0 +1,11 @@
+import re
+
+f = open('新建文本文档.txt','r')
+f_out = open('新建文本文档result++.txt','w')
+  for line in f:
+      lines = [ _l for _l in f if _l.strip() ]
+      f.close()
+      f = open('lua.lua', 'w')
+      f.writelines(lines)
+      f.close() 
+
