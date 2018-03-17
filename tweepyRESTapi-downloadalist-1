@@ -1,0 +1,67 @@
+#using tweepy to search and download a list of name from twitter REST api
+
+
+import tweepy,time
+from tweepy import OAuthHandler, API
+import requests
+
+def getAPI():
+    consumer_key =''
+    consumer_secret = ''
+    access_token = ''
+    access_secret = ''
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_secret)
+    print ('success')
+    api = tweepy.API(auth)
+    return api
+
+
+
+def getUserInfo(api,q,mode = 'search'):
+    try:
+        if mode == 'search':
+            users = api.search_users(q, 1, 1)
+            if len(users) == 0:
+                print('user does not exist')
+                return None
+            else:
+                user = users[0]._json
+        else:
+            user = api.get_user(q)  
+        id = user['id']
+        screen_name = user['screen_name']
+        description = user['description']
+        location = user['location']
+    
+    
+        return str(id), screen_name, description, location
+    except tweepy.RateLimitError:
+            time.sleep(15 * 60)
+
+def limit_handled(cursor):
+    while True:
+        try:
+            yield cursor.next()
+        except tweepy.RateLimitError:
+            time.sleep(15 * 60)
+
+
+if __name__ == "__main__":
+    api = getAPI()
+    f = open('ID.txt','r')
+    f_out = open('1002.txt','w')
+    for line in f:
+        line = line.strip()
+        query = line
+        result = getUserInfo(api,query)
+        try:
+            if result:
+                print('#'.join(result))
+                f_out.write(u'#'.join(result)+u'\n')
+            else:
+                f_out.write('do not exist'+'\n')
+        except:
+            f_out.write('there is an error'+'\n')
+    f_out.close()
