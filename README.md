@@ -1,2 +1,4 @@
 # journal-twitter-google
-SOCIAL NETWORK PROCESS WITH TWEEPY AND DEEPLEARNING
+a research about social network from the study of situation of altermetrics in twitter.
+
+will to use python, tweepy package ,spyder, re and social network  
