@@ -1,0 +1,42 @@
+#using tweepy to download a list of information with twitterSTREAMapi
+
+
+from tweepy import Stream
+from tweepy import OAuthHandler
+from tweepy.streaming import StreamListener
+import time
+import json
+#EDITED 13:25
+from tweepy.auth import API
+
+# Twitter Credentials
+ckey = ''
+csecret = ''
+atoken = ''
+asecret = ''
+
+class listener(StreamListener):
+    def on_data(self, data):
+        try:
+
+            tweet = json.loads(data)
+
+            if tweet["lang"] == "nl":
+                print tweet["id"]
+
+            return True
+        except BaseException, e:
+            print 'failed on_date,', str(e)
+            time.sleep(5)
+
+    def on_error(self, status):
+        print status
+
+
+auth = OAuthHandler(ckey, csecret)
+auth.set_access_token(atoken, asecret)
+twitterStream = Stream(auth, listener())
+
+print api.verify_credentials()
+# twitterStream.filter( track=lstZoekwaarde, languages="nl" )
+twitterStream.filter(track='christmas', languages="nl")
